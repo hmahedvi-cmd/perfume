@@ -214,3 +214,15 @@
     gap: 15px;
   }
 }
+
+@media (max-width: 768px) {
+  .checkout-page {
+    padding: 100px 15px 40px; /* Offset for header + small side padding */
+  }
+  .checkout-form-container {
+    padding: 20px 15px;
+  }
+  .checkout-summary-container {
+    padding: 20px 15px;
+  }
+}

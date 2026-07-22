@@ -234,17 +234,52 @@ body.dark .filters-sidebar {
   display: inline-block;
 }
 
+/* Mobile Filter Toggle Button */
+.mobile-filter-toggle-btn {
+  display: none;
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.mobile-filter-toggle-btn:hover {
+  background: var(--accent);
+  color: #FFFFFF;
+}
+
 /* Tablet & Mobile responsive filters layout */
 @media (max-width: 992px) {
   .shop-container {
     flex-direction: column;
     padding: 40px 0;
-    gap: 40px;
+    gap: 20px;
+  }
+  
+  .mobile-filter-toggle-btn {
+    display: flex;
   }
   
   .filters-sidebar {
     width: 100%;
     position: relative;
     top: 0;
+    display: none; /* Collapse by default */
+  }
+
+  .filters-sidebar.open {
+    display: block; /* Show when open class is applied */
   }
 }

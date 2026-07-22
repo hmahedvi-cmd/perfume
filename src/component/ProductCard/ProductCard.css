@@ -440,3 +440,49 @@ body.dark .quick-view-modal {
     font-size: 1.6rem;
   }
 }
+
+/* Mobile Product Card Optimization */
+@media (max-width: 576px) {
+  .card-info {
+    padding: 12px;
+  }
+  .card-title {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+  .card-price {
+    font-size: 0.95rem;
+  }
+  .card-brand {
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .card-meta {
+    margin-bottom: 12px;
+  }
+  .card-actions {
+    gap: 6px;
+  }
+  .card-cart-btn {
+    padding: 8px 4px;
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+    gap: 4px;
+  }
+  .card-cart-btn .btn-text {
+    display: none; /* Hide 'Add to Cart' text, only show icon */
+  }
+  .card-wishlist-btn {
+    padding: 8px;
+  }
+  .premium-badge {
+    top: 8px;
+    left: 8px;
+    font-size: 0.55rem;
+    padding: 4px 8px;
+  }
+  .quick-view-btn {
+    display: none !important; /* Quick view is frustrating on touch devices, hide it */
+  }
+}

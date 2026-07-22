@@ -232,9 +232,19 @@ function Navbar() {
               <Link to="/shop" onClick={() => setOpen(false)}>Shop</Link>
               <Link to="/collections" onClick={() => setOpen(false)}>Collections</Link>
               <Link to="/about" onClick={() => setOpen(false)}>About</Link>
+              <Link to="/wishlist" onClick={() => setOpen(false)}>Wishlist</Link>
               {isAdmin && (
                 <Link to="/admin" onClick={() => setOpen(false)} className="drawer-admin-link">
                   Admin Dashboard
+                </Link>
+              )}
+              {user ? (
+                <Link to="/profile" onClick={() => setOpen(false)} className="drawer-profile-link">
+                  My Profile
+                </Link>
+              ) : (
+                <Link to="/login" onClick={() => setOpen(false)} className="drawer-login-link">
+                  Login / Register
                 </Link>
               )}
             </div>

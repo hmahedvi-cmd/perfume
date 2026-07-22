@@ -23,6 +23,7 @@ function Shop() {
   const [minRating, setMinRating] = useState(0);
   const [selectedVolume, setSelectedVolume] = useState("All");
   const [inStockOnly, setInStockOnly] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
   // Sync category and search states if query parameters change
   useEffect(() => {
@@ -106,8 +107,15 @@ function Shop() {
       </div>
 
       <div className="shop-container container">
+        <button
+          className="mobile-filter-toggle-btn"
+          onClick={() => setShowFilters(!showFilters)}
+        >
+          <FaFilter /> {showFilters ? "Hide Filters" : "Show Filters"}
+        </button>
+
         {/* Filters Sidebar */}
-        <aside className="filters-sidebar">
+        <aside className={`filters-sidebar ${showFilters ? "open" : ""}`}>
           <div className="filters-header">
             <h3>
               <FaFilter /> Filters

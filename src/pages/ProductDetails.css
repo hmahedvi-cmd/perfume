@@ -477,3 +477,30 @@ body.dark .note-capsule {
     gap: 40px;
   }
 }
+
+@media (max-width: 768px) {
+  .details-title {
+    font-size: 2rem;
+  }
+  .details-price {
+    font-size: 1.6rem;
+  }
+  .buy-controls-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .details-cart-btn {
+    width: 100%;
+  }
+  .details-wishlist-btn {
+    width: 100%;
+    padding: 14px;
+  }
+  .security-badges {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .gallery-main-viewport {
+    aspect-ratio: 1 / 1;
+  }
+}

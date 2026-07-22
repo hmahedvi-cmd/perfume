@@ -168,8 +168,8 @@ button.accent:hover, .btn-accent:hover {
 
 @media (max-width: 600px) {
   .grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 }
 
