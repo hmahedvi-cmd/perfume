@@ -1,0 +1,353 @@
+.about-page-wrapper {
+  padding-top: 85px; /* Offset for sticky transparent header */
+}
+
+/* About Editorial Hero */
+.about-hero-section {
+  position: relative;
+  height: 55vh;
+  min-height: 400px;
+  background: linear-gradient(rgba(12, 12, 13, 0.65), rgba(12, 12, 13, 0.85)), url('../assets/images/hero.jpg') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.about-hero-subtitle {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 6px;
+  color: var(--accent);
+  margin-bottom: 20px;
+  display: block;
+}
+
+.about-hero-title {
+  font-family: var(--heading);
+  font-size: 3.5rem;
+  font-weight: 400;
+  color: #FFFFFF;
+  margin-bottom: 20px;
+}
+
+.about-hero-divider {
+  width: 60px;
+  height: 1px;
+  background: var(--accent);
+  margin: 0 auto;
+}
+
+/* Brand Story Section */
+.brand-story-section {
+  padding: 120px 0;
+  box-sizing: border-box;
+}
+
+.story-row {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+}
+
+.story-content-col {
+  flex: 1.1;
+  text-align: left;
+}
+
+.story-meta {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.story-title {
+  font-family: var(--heading);
+  font-size: 2.8rem;
+  font-weight: 400;
+  color: var(--text-h);
+  margin-bottom: 20px;
+}
+
+.story-divider {
+  width: 50px;
+  height: 1px;
+  background: var(--accent);
+  margin-bottom: 25px;
+}
+
+.story-content-col p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.story-image-col {
+  flex: 0.9;
+}
+
+.story-img-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1.1;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+}
+
+.story-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s ease;
+}
+
+.story-row:hover .story-img-wrapper img {
+  transform: scale(1.04);
+}
+
+/* Milestones Counter Section */
+.milestones-section {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 80px 0;
+  box-sizing: border-box;
+}
+
+.milestones-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  text-align: center;
+}
+
+.counter-number {
+  font-family: var(--heading);
+  font-size: 3.5rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.milestone-label {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--text-h);
+  margin: 0;
+}
+
+/* Core Pillars Section */
+.pillars-section {
+  padding: 120px 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.pillars-main-title {
+  font-family: var(--heading);
+  font-size: 2.8rem;
+  font-weight: 400;
+  margin-bottom: 60px;
+}
+
+.pillar-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 50px 30px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.pillar-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent-border);
+}
+
+.pillar-icon {
+  font-size: 2.2rem;
+  color: var(--accent);
+  margin-bottom: 25px;
+}
+
+.pillar-card h3 {
+  font-family: var(--heading);
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin-bottom: 15px;
+  color: var(--text-h);
+}
+
+.pillar-card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0;
+}
+
+/* Vertical Timeline Section */
+.timeline-section {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  padding: 120px 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.timeline-main-title {
+  font-family: var(--heading);
+  font-size: 2.8rem;
+  font-weight: 400;
+  margin-bottom: 80px;
+}
+
+.timeline-container {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+/* Line in center */
+.timeline-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background-color: var(--border);
+  transform: translateX(-50%);
+}
+
+.timeline-item {
+  position: relative;
+  width: 50%;
+  margin-bottom: 60px;
+  box-sizing: border-box;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.left-item {
+  left: 0;
+  padding-right: 50px;
+  text-align: right;
+}
+
+.right-item {
+  left: 50%;
+  padding-left: 50px;
+  text-align: left;
+}
+
+/* Center Dots */
+.timeline-dot {
+  position: absolute;
+  top: 25px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 4px solid var(--bg-secondary);
+  box-shadow: 0 0 0 1px var(--border);
+  z-index: 10;
+}
+
+.left-item .timeline-dot {
+  right: -6px;
+}
+
+.right-item .timeline-dot {
+  left: -6px;
+}
+
+.timeline-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 30px;
+  box-sizing: border-box;
+  box-shadow: var(--shadow);
+}
+
+body.dark .timeline-box {
+  background: var(--bg-secondary);
+}
+
+.timeline-year {
+  font-family: var(--heading);
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.timeline-title {
+  font-family: var(--heading);
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: var(--text-h);
+}
+
+.timeline-desc {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .story-row {
+    flex-direction: column;
+    gap: 50px;
+  }
+  .story-content-col, .story-image-col {
+    width: 100%;
+    text-align: center;
+  }
+  .story-divider {
+    margin: 0 auto 25px;
+  }
+  .milestones-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-hero-title {
+    font-size: 2.5rem;
+  }
+  .story-title, .pillars-main-title, .timeline-main-title {
+    font-size: 2.2rem;
+  }
+  
+  /* Timeline responsive to single column */
+  .timeline-line {
+    left: 20px;
+  }
+  .timeline-item {
+    width: 100% !important;
+    left: 0 !important;
+    padding-left: 50px !important;
+    padding-right: 0 !important;
+    text-align: left !important;
+  }
+  .timeline-dot {
+    left: 14px !important;
+  }
+}

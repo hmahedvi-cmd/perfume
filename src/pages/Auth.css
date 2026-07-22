@@ -1,0 +1,333 @@
+.auth-page-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  text-align: left;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+/* Left Column: Visual Split Column */
+.auth-visual-col {
+  flex: 1.1;
+  background: linear-gradient(135deg, rgba(12, 12, 13, 0.7) 0%, rgba(12, 12, 13, 0.4) 100%), 
+              url('../assets/images/hero.jpg') no-repeat center center/cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8%;
+  box-sizing: border-box;
+  color: #FFFFFF;
+}
+
+.auth-visual-col h2 {
+  font-family: var(--heading);
+  font-size: 3.5rem;
+  color: #FFFFFF;
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.auth-visual-col p {
+  font-family: var(--sans);
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+/* Right Column: Form Split Column */
+.auth-form-col {
+  flex: 0.9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5% 8%;
+  box-sizing: border-box;
+  background: var(--bg-secondary);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 40px;
+  box-sizing: border-box;
+  box-shadow: var(--shadow);
+}
+
+body.dark .auth-card {
+  background: rgba(19, 20, 23, 0.6);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+.auth-logo {
+  font-family: var(--heading);
+  font-size: 1.8rem;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: var(--text-h);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  margin-bottom: 30px;
+}
+
+.auth-logo span {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 300;
+  letter-spacing: 5px;
+  color: var(--accent);
+  margin-top: 4px;
+}
+
+.auth-card h3 {
+  font-family: var(--heading);
+  font-size: 1.6rem;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.auth-subtitle {
+  font-size: 0.85rem;
+  color: var(--text);
+  margin-bottom: 30px;
+}
+
+/* Form Controls */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-field-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.input-field-group label {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-h);
+  margin-bottom: 8px;
+}
+
+.auth-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.auth-input-wrapper input {
+  width: 100%;
+  padding: 12px 40px 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--bg);
+  color: var(--text-h);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.auth-input-wrapper input:focus {
+  border-color: var(--accent);
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 14px;
+  color: var(--text);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle-icon:hover {
+  color: var(--text-h);
+}
+
+/* Remember Me & Forgot Password Row */
+.auth-options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+.remember-me-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.remember-me-checkbox input {
+  accent-color: var(--accent);
+  width: 15px;
+  height: 15px;
+}
+
+.forgot-password-link {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.forgot-password-link:hover {
+  color: var(--accent);
+}
+
+/* Submit Action */
+.auth-submit-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+/* Social Logins Split Grid */
+.social-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--text);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 25px 0;
+}
+
+.social-divider::before,
+.social-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border);
+}
+
+.social-divider:not(:empty)::before {
+  margin-right: .5em;
+}
+
+.social-divider:not(:empty)::after {
+  margin-left: .5em;
+}
+
+.social-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.social-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 10px 0;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--text-h);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+  border-color: var(--text-h);
+  background: var(--bg-secondary);
+}
+
+/* Redirection link */
+.auth-redirect-text {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text);
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
+.auth-redirect-text a {
+  color: var(--text-h);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.auth-redirect-text a:hover {
+  color: var(--accent);
+}
+
+/* Error message block */
+.auth-error-msg {
+  background: rgba(231, 76, 60, 0.08);
+  border-left: 3px solid #E74C3C;
+  color: #E74C3C;
+  padding: 12px 15px;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+
+/* Password strength meter */
+.password-strength-container {
+  margin-top: 8px;
+}
+
+.strength-bar-bg {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  position: relative;
+}
+
+.strength-bar-fill {
+  height: 100%;
+  transition: width 0.4s ease, background 0.4s ease;
+}
+
+.strength-text {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+/* Responsive splits */
+@media (max-width: 992px) {
+  .auth-visual-col {
+    display: none; /* Hide visual banner column on tablet and mobile */
+  }
+  .auth-form-col {
+    flex: 1;
+    width: 100%;
+    padding: 20px;
+  }
+  .auth-card {
+    padding: 30px 20px;
+  }
+}

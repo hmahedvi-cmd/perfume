@@ -1,0 +1,270 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
+
+:root {
+  /* Colors */
+  --accent: #C8A96A; /* Luxury Champagne Gold */
+  --accent-hover: #B89859;
+  --accent-bg: rgba(200, 169, 106, 0.1);
+  --accent-border: rgba(200, 169, 106, 0.4);
+  
+  --bg: #FFFFFF;
+  --bg-secondary: #FAF8F5; /* Warm off-white/cream */
+  --text: #dfe4e1;
+  --text-h: #111111; /* Soft luxury black */
+  --border: #E8E5E0;
+  --code-bg: #F5F2EB;
+  --shadow: rgba(0, 0, 0, 0.05) 0px 10px 30px 0px, rgba(0, 0, 0, 0.03) 0px 1px 3px 0px;
+  
+  /* Fonts */
+  --sans: 'Poppins', system-ui, -apple-system, sans-serif;
+  --heading: 'Playfair Display', Georgia, serif;
+  --mono: ui-monospace, monospace;
+
+  font: 16px/1.6 var(--sans);
+  letter-spacing: 0.5px;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  overscroll-behavior-y: none;
+}
+
+/* Dark Mode Theme overrides */
+body.dark, html.dark {
+  --bg: #0C0C0D; /* Obsidian black */
+  --bg-secondary: #131417; /* Slate dark obsidian */
+  --text: #A0A5B5;
+  --text-h: #F3F4F6;
+  --border: #22242D;
+  --code-bg: #1B1C22;
+  --shadow: rgba(0, 0, 0, 0.5) 0px 15px 40px 0px;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Scrollbar customization */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Typography resets */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+  margin: 0 0 1rem;
+  letter-spacing: 0.5px;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 3.5rem;
+  @media (max-width: 768px) {
+    font-size: 2.25rem;
+  }
+}
+
+h2 {
+  font-size: 2rem;
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
+}
+
+p {
+  margin: 0 0 1rem;
+  font-weight: 300;
+  color: var(--text);
+}
+
+/* Premium Buttons & Form Controls */
+button, .btn {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border-radius: 0; /* Boxy luxury shapes */
+  border: 1px solid var(--text-h);
+  background: transparent;
+  color: var(--text-h);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+button:hover, .btn:hover {
+  background: var(--text-h);
+  color: var(--bg);
+}
+
+button.primary, .btn-primary {
+  background: var(--text-h);
+  color: var(--bg);
+  border-color: var(--text-h);
+}
+
+button.primary:hover, .btn-primary:hover {
+  background: var(--accent);
+  color: #FFFFFF;
+  border-color: var(--accent);
+}
+
+button.accent, .btn-accent {
+  background: var(--accent);
+  color: #FFFFFF;
+  border-color: var(--accent);
+}
+
+button.accent:hover, .btn-accent:hover {
+  background: var(--text-h);
+  color: var(--bg);
+  border-color: var(--text-h);
+}
+
+/* Glassmorphism panel styles */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Grid layout rules */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Container width standard */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 5%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Page header banner */
+.page-header-banner {
+  padding: 100px 0 50px;
+  text-align: center;
+  background: var(--bg-secondary);
+  margin-bottom: 50px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header-banner h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.page-header-banner p {
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+/* Scroll Progress Bar */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent);
+  transform-origin: 0%;
+  z-index: 10000;
+}
+
+/* Floating Back to Top Button */
+.back-to-top-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 1.1rem;
+  cursor: pointer;
+  z-index: 998;
+  box-shadow: var(--shadow);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.back-to-top-btn svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+body.dark .back-to-top-btn {
+  background: var(--bg-secondary);
+}
+
+.back-to-top-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #FFFFFF;
+  transform: translateY(-5px);
+}
+
+/* Gold underline styling helper inside premium buttons */
+.btn-text {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
+.btn-text::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--accent);
+}
