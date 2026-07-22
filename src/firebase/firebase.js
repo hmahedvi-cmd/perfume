@@ -12,7 +12,22 @@ const firebaseConfig = {
 };
 
 
-const app = initializeApp(firebaseConfig);
+let app;
+let auth = null;
+let db = null;
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+if (firebaseConfig.apiKey && firebaseConfig.projectId) {
+  try {
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+  } catch (error) {
+    console.error("Failed to initialize Firebase:", error);
+  }
+} else {
+  console.warn(
+    "Firebase API key or project ID is missing. Firebase services will not be initialized, and local mock storage will be used."
+  );
+}
+
+export { auth, db };
