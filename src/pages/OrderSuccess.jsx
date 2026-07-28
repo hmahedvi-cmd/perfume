@@ -25,16 +25,36 @@ function OrderSuccess() {
         return;
       }
 
+      // Check if it's a local order first
+      if (typeof orderId === "string" && orderId.startsWith("order_mock_")) {
+        const localOrders = JSON.parse(localStorage.getItem("luxe_local_orders") || "[]");
+        const found = localOrders.some((o) => o.id === orderId);
+        if (found) {
+          setLoading(false);
+          return;
+        }
+      }
+
       try {
         const orderRef = doc(db, "orders", orderId);
         const orderSnap = await getDoc(orderRef);
 
         if (!orderSnap.exists()) {
-          setError("Order record not found.");
+          // Check local storage as backup
+          const localOrders = JSON.parse(localStorage.getItem("luxe_local_orders") || "[]");
+          const found = localOrders.some((o) => o.id === orderId);
+          if (!found) {
+            setError("Order record not found.");
+          }
         }
       } catch (err) {
         console.error("Error finalizing order:", err);
-        setError("Failed to verify order details.");
+        // Check local storage as backup
+        const localOrders = JSON.parse(localStorage.getItem("luxe_local_orders") || "[]");
+        const found = localOrders.some((o) => o.id === orderId);
+        if (!found) {
+          setError("Failed to verify order details.");
+        }
       } finally {
         setLoading(false);
       }

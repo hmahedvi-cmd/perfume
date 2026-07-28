@@ -17,18 +17,34 @@ function OrderHistory() {
     const fetchOrders = async () => {
       setLoading(true);
       try {
-        const q = query(collection(db, "orders"), where("userId", "==", user.uid));
-        const querySnapshot = await getDocs(q);
-        const fetched = [];
-        querySnapshot.forEach((doc) => {
-          fetched.push({ id: doc.id, ...doc.data() });
+        let fetched = [];
+        try {
+          const q = query(collection(db, "orders"), where("userId", "==", user.uid));
+          const querySnapshot = await getDocs(q);
+          querySnapshot.forEach((doc) => {
+            fetched.push({ id: doc.id, ...doc.data() });
+          });
+        } catch (fbErr) {
+          console.warn("Failed to query Firestore for user orders:", fbErr);
+        }
+
+        // Merge with local orders
+        const localOrders = JSON.parse(localStorage.getItem("luxe_local_orders") || "[]");
+        localOrders.forEach((localOrder) => {
+          if (localOrder.userId === user.uid && !fetched.some((o) => o.id === localOrder.id)) {
+            fetched.push(localOrder);
+          }
         });
 
-        // Sort by date locally to avoid index requirements
+        // Sort by date locally (supporting seconds timestamp, string, or Date objects)
         fetched.sort((a, b) => {
           const dateA = a.createdAt?.seconds || 0;
           const dateB = b.createdAt?.seconds || 0;
-          return dateB - dateA;
+
+          const timeA = typeof dateA === "string" ? new Date(dateA).getTime() / 1000 : dateA;
+          const timeB = typeof dateB === "string" ? new Date(dateB).getTime() / 1000 : dateB;
+
+          return timeB - timeA;
         });
 
         setOrders(fetched);
@@ -44,7 +60,14 @@ function OrderHistory() {
 
   const formatDate = (timestamp) => {
     if (!timestamp) return "";
-    const date = new Date(timestamp.seconds * 1000);
+    let date;
+    if (timestamp.seconds !== undefined) {
+      date = new Date(timestamp.seconds * 1000);
+    } else if (timestamp instanceof Date) {
+      date = timestamp;
+    } else {
+      date = new Date(timestamp);
+    }
     return date.toLocaleDateString(undefined, {
       year: "numeric",
       month: "long",

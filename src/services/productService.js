@@ -94,7 +94,7 @@ const initialProducts = [
   }
 ];
 
-// Seed products to Firestore if collection is empty, incomplete, or contains old paths
+// Seed products to Firestore if collection is empty, or contains obsolete images
 export async function seedProducts() {
   try {
     const collectionRef = collection(db, PRODUCTS_COLLECTION);
@@ -102,21 +102,23 @@ export async function seedProducts() {
     
     let needsReset = false;
     
-    if (querySnapshot.empty || querySnapshot.size !== initialProducts.length) {
+    if (querySnapshot.empty) {
       needsReset = true;
     } else {
-      // Check for obsolete paths or image filename changes
+      // Check for obsolete paths or image filename changes in the seeded initial products
       querySnapshot.forEach((docSnap) => {
         const data = docSnap.data();
         const localMatch = initialProducts.find((p) => p.name === data.name);
-        if (
-          !data.image ||
-          data.image.includes("src") ||
-          data.image.includes("assets") ||
-          !data.image.startsWith("/") ||
-          (localMatch && localMatch.image !== data.image)
-        ) {
-          needsReset = true;
+        if (localMatch) {
+          if (
+            !data.image ||
+            data.image.includes("src") ||
+            data.image.includes("assets") ||
+            !data.image.startsWith("/") ||
+            localMatch.image !== data.image
+          ) {
+            needsReset = true;
+          }
         }
       });
     }
@@ -139,9 +141,9 @@ export async function seedProducts() {
 
 // Fetch all products from Firestore (falls back to local static array on failure)
 export async function fetchProducts() {
+  let products = [];
   try {
     const querySnapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
-    const products = [];
     querySnapshot.forEach((docSnap) => {
       products.push({
         id: docSnap.id,
@@ -149,17 +151,50 @@ export async function fetchProducts() {
       });
     });
     if (products.length === 0) {
-      return initialProducts.map((p, i) => ({ id: `product${i + 1}`, ...p }));
+      products = initialProducts.map((p, i) => ({ id: `product${i + 1}`, ...p }));
     }
-    return products;
   } catch (error) {
     console.warn("Error fetching products from Firestore, loading local dataset:", error);
-    return initialProducts.map((p, i) => ({ id: `product${i + 1}`, ...p }));
+    products = initialProducts.map((p, i) => ({ id: `product${i + 1}`, ...p }));
   }
+
+  // Apply local edits and additions
+  const localProducts = JSON.parse(localStorage.getItem("luxe_local_products") || "[]");
+  const deletedIds = JSON.parse(localStorage.getItem("luxe_deleted_products") || "[]");
+
+  // 1. Filter out deleted products
+  products = products.filter(p => !deletedIds.includes(p.id));
+
+  // 2. Apply local overrides for existing products, and append new local-only products
+  localProducts.forEach((localProd) => {
+    const index = products.findIndex(p => p.id === localProd.id);
+    if (index !== -1) {
+      products[index] = localProd;
+    } else {
+      if (!deletedIds.includes(localProd.id)) {
+        products.push(localProd);
+      }
+    }
+  });
+
+  return products;
 }
 
 // Fetch single product by ID (falls back to local static item search on failure)
 export async function getProductById(id) {
+  // Check if deleted locally
+  const deletedIds = JSON.parse(localStorage.getItem("luxe_deleted_products") || "[]");
+  if (deletedIds.includes(id)) {
+    return null;
+  }
+
+  // Check if edited/added locally
+  const localProducts = JSON.parse(localStorage.getItem("luxe_local_products") || "[]");
+  const foundLocal = localProducts.find(p => p.id === id);
+  if (foundLocal) {
+    return foundLocal;
+  }
+
   try {
     const docRef = doc(db, PRODUCTS_COLLECTION, id);
     const docSnap = await getDoc(docRef);
@@ -191,26 +226,53 @@ export async function addProduct(product) {
     const docRef = await addDoc(collection(db, PRODUCTS_COLLECTION), product);
     return { id: docRef.id, ...product };
   } catch (error) {
-    console.error("Error adding product to Firestore:", error);
-    // Local mock action
-    return { id: `mock_${Date.now()}`, ...product };
+    console.error("Error adding product to Firestore, saving locally:", error);
+    const newProduct = { id: `mock_${Date.now()}`, ...product };
+    const localProducts = JSON.parse(localStorage.getItem("luxe_local_products") || "[]");
+    localProducts.push(newProduct);
+    localStorage.setItem("luxe_local_products", JSON.stringify(localProducts));
+    return newProduct;
   }
 }
 
 // Update a product (Admin)
 export async function updateProduct(id, product) {
+  const updatedProduct = { id, ...product };
+  
+  // Always update local storage first so we have the override
+  const localProducts = JSON.parse(localStorage.getItem("luxe_local_products") || "[]");
+  const index = localProducts.findIndex(p => p.id === id);
+  if (index !== -1) {
+    localProducts[index] = updatedProduct;
+  } else {
+    localProducts.push(updatedProduct);
+  }
+  localStorage.setItem("luxe_local_products", JSON.stringify(localProducts));
+
   try {
     const docRef = doc(db, PRODUCTS_COLLECTION, id);
     await updateDoc(docRef, product);
-    return { id, ...product };
+    return updatedProduct;
   } catch (error) {
-    console.error(`Error updating product ${id} in Firestore:`, error);
-    return { id, ...product };
+    console.error(`Error updating product ${id} in Firestore, saved locally:`, error);
+    return updatedProduct;
   }
 }
 
 // Delete a product (Admin)
 export async function deleteProduct(id) {
+  // Remove from local products if present
+  const localProducts = JSON.parse(localStorage.getItem("luxe_local_products") || "[]");
+  const updatedLocal = localProducts.filter(p => p.id !== id);
+  localStorage.setItem("luxe_local_products", JSON.stringify(updatedLocal));
+
+  // Add to deleted products list to ensure it is filtered out of fetch results
+  const deletedIds = JSON.parse(localStorage.getItem("luxe_deleted_products") || "[]");
+  if (!deletedIds.includes(id)) {
+    deletedIds.push(id);
+    localStorage.setItem("luxe_deleted_products", JSON.stringify(deletedIds));
+  }
+
   try {
     const docRef = doc(db, PRODUCTS_COLLECTION, id);
     await deleteDoc(docRef);

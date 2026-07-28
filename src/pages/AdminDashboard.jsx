@@ -28,6 +28,9 @@ function AdminDashboard() {
     volume: "100ml",
     stock: "10",
     isNew: false,
+    scentProfile: "",
+    sourcing: "",
+    maceration: "",
   });
 
   // Load products and orders
@@ -38,11 +41,24 @@ function AdminDashboard() {
         const prodData = await fetchProducts();
         setProducts(prodData);
 
-        const ordersSnapshot = await getDocs(collection(db, "orders"));
-        const orderData = [];
-        ordersSnapshot.forEach((doc) => {
-          orderData.push({ id: doc.id, ...doc.data() });
+        let orderData = [];
+        try {
+          const ordersSnapshot = await getDocs(collection(db, "orders"));
+          ordersSnapshot.forEach((doc) => {
+            orderData.push({ id: doc.id, ...doc.data() });
+          });
+        } catch (err) {
+          console.warn("Failed to fetch orders from Firestore:", err);
+        }
+
+        // Merge with locally placed orders
+        const localOrders = JSON.parse(localStorage.getItem("luxe_local_orders") || "[]");
+        localOrders.forEach((localOrder) => {
+          if (!orderData.some((o) => o.id === localOrder.id)) {
+            orderData.push(localOrder);
+          }
         });
+
         // Sort by newest order
         orderData.sort((a, b) => {
           const dateA = a.createdAt?.seconds || 0;
@@ -68,6 +84,25 @@ function AdminDashboard() {
     });
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 1024 * 1024) {
+      toast.error("Image file size should be less than 1MB");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setForm((prev) => ({
+        ...prev,
+        image: reader.result,
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
   const resetForm = () => {
     setForm({
       name: "",
@@ -81,6 +116,9 @@ function AdminDashboard() {
       volume: "100ml",
       stock: "10",
       isNew: false,
+      scentProfile: "",
+      sourcing: "",
+      maceration: "",
     });
     setIsEditing(false);
     setEditId(null);
@@ -101,6 +139,9 @@ function AdminDashboard() {
       volume: product.volume || "100ml",
       stock: product.stock || "10",
       isNew: product.isNew || false,
+      scentProfile: product.scentProfile || "",
+      sourcing: product.sourcing || "",
+      maceration: product.maceration || "",
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -131,6 +172,9 @@ function AdminDashboard() {
       volume: form.volume,
       stock: stockNum,
       isNew: form.isNew,
+      scentProfile: form.scentProfile,
+      sourcing: form.sourcing,
+      maceration: form.maceration,
     };
 
     try {
@@ -163,6 +207,21 @@ function AdminDashboard() {
   };
 
   const handleOrderStatusChange = async (orderId, newStatus) => {
+    const isMock = typeof orderId === "string" && orderId.startsWith("order_mock_");
+    
+    if (isMock) {
+      const localOrders = JSON.parse(localStorage.getItem("luxe_local_orders") || "[]");
+      const updatedLocal = localOrders.map((o) => 
+        o.id === orderId ? { ...o, status: newStatus } : o
+      );
+      localStorage.setItem("luxe_local_orders", JSON.stringify(updatedLocal));
+      setOrders(
+        orders.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
+      );
+      toast.success(`Order status updated to ${newStatus}`);
+      return;
+    }
+
     try {
       const orderRef = doc(db, "orders", orderId);
       await updateDoc(orderRef, { status: newStatus });
@@ -171,7 +230,26 @@ function AdminDashboard() {
       );
       toast.success(`Order status updated to ${newStatus}`);
     } catch (err) {
-      toast.error("Failed to update status.");
+      console.warn("Failed to update Firestore order status, updating locally:", err);
+      // Fallback: save status change override in local storage
+      const localOrders = JSON.parse(localStorage.getItem("luxe_local_orders") || "[]");
+      const existingIdx = localOrders.findIndex((o) => o.id === orderId);
+      
+      const foundOrder = orders.find((o) => o.id === orderId);
+      if (foundOrder) {
+        const updatedOrder = { ...foundOrder, status: newStatus };
+        if (existingIdx !== -1) {
+          localOrders[existingIdx] = updatedOrder;
+        } else {
+          localOrders.push(updatedOrder);
+        }
+        localStorage.setItem("luxe_local_orders", JSON.stringify(localOrders));
+      }
+
+      setOrders(
+        orders.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
+      );
+      toast.success(`Order status updated to ${newStatus}`);
     }
   };
 
@@ -284,16 +362,45 @@ function AdminDashboard() {
                         onChange={handleChange}
                       />
                     </div>
-                    <div className="form-group">
-                      <label>Image URL *</label>
-                      <input
-                        type="text"
-                        name="image"
-                        value={form.image}
-                        onChange={handleChange}
-                        placeholder="e.g. /images/dior.jpg"
-                        required
-                      />
+                    <div className="form-group full-width image-upload-group">
+                      <label>Product Image *</label>
+                      <div className="image-upload-container">
+                        <div className="image-upload-wrapper">
+                          {form.image ? (
+                            <div className="image-preview-container">
+                              <img src={form.image} alt="Preview" className="image-preview" />
+                              <button
+                                type="button"
+                                className="remove-image-btn"
+                                onClick={() => setForm({ ...form, image: "" })}
+                              >
+                                Remove Image
+                              </button>
+                            </div>
+                          ) : (
+                            <label className="upload-dropzone">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                style={{ display: "none" }}
+                              />
+                              <FaPlus className="upload-icon" />
+                              <span>Click to select perfume image file</span>
+                            </label>
+                          )}
+                        </div>
+                        <div className="image-url-fallback">
+                          <span>Or paste image URL:</span>
+                          <input
+                            type="text"
+                            name="image"
+                            value={form.image || ""}
+                            onChange={handleChange}
+                            placeholder="e.g. /images/dior.jpg or https://example.com/perfume.jpg"
+                          />
+                        </div>
+                      </div>
                     </div>
                     <div className="form-group full-width">
                       <label>Notes (comma separated)</label>
@@ -313,6 +420,36 @@ function AdminDashboard() {
                         onChange={handleChange}
                         placeholder="Fresh woody fragrance..."
                         rows="3"
+                      />
+                    </div>
+                    <div className="form-group full-width">
+                      <label>Scent Profile (Details Tab)</label>
+                      <textarea
+                        name="scentProfile"
+                        value={form.scentProfile}
+                        onChange={handleChange}
+                        placeholder="A premium orchestration featuring top notes of sweet bergamot..."
+                        rows="2"
+                      />
+                    </div>
+                    <div className="form-group full-width">
+                      <label>Sourcing Details (Details Tab)</label>
+                      <textarea
+                        name="sourcing"
+                        value={form.sourcing}
+                        onChange={handleChange}
+                        placeholder="We partner directly with sustainable bio-farms..."
+                        rows="2"
+                      />
+                    </div>
+                    <div className="form-group full-width">
+                      <label>Maceration Details (Details Tab)</label>
+                      <textarea
+                        name="maceration"
+                        value={form.maceration}
+                        onChange={handleChange}
+                        placeholder="Each bottle is matured and macerated for exactly twelve weeks..."
+                        rows="2"
                       />
                     </div>
                     <div className="form-group checkbox-group full-width">

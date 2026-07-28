@@ -240,23 +240,17 @@ function ProductDetails() {
               <div className="tabs-content">
                 {activeTab === "profile" && (
                   <p>
-                    A premium orchestration featuring top notes of sweet bergamot, leading into
-                    a heart of absolute floral jasmines, resting on a deep base of oakmoss and
-                    precious sandalwood. Long-lasting (8-12 hours sillage).
+                    {product.scentProfile || "A premium orchestration featuring top notes of sweet bergamot, leading into a heart of absolute floral jasmines, resting on a deep base of oakmoss and precious sandalwood. Long-lasting (8-12 hours sillage)."}
                   </p>
                 )}
                 {activeTab === "sourcing" && (
                   <p>
-                    We partner directly with sustainable bio-farms in Grasse, France, and Mysore,
-                    India. 100% vegan, cruelty-free, and formulated without synthetic colorants
-                    or harsh parabens.
+                    {product.sourcing || "We partner directly with sustainable bio-farms in Grasse, France, and Mysore, India. 100% vegan, cruelty-free, and formulated without synthetic colorants or harsh parabens."}
                   </p>
                 )}
                 {activeTab === "shipping" && (
                   <p>
-                    Each bottle is matured and macerated for exactly twelve weeks inside stainless 
-                    steel tanks. This allows natural essential oils to blend perfectly with pure 
-                    organic alcohol before bottling.
+                    {product.maceration || "Each bottle is matured and macerated for exactly twelve weeks inside stainless steel tanks. This allows natural essential oils to blend perfectly with pure organic alcohol before bottling."}
                   </p>
                 )}
               </div>
