@@ -58,6 +58,7 @@
 
 .new-badge {
   background: var(--text-h);
+  color: var(--bg);
 }
 
 .bestseller-badge {
