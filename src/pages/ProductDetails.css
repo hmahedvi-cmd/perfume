@@ -60,7 +60,6 @@
 .gallery-main-image-wrapper {
   width: 100%;
   height: 100%;
-  cursor: zoom-in;
   overflow: hidden;
 }
 
@@ -80,20 +79,7 @@
   transform: scale(1.3) rotate(-3deg);
 }
 
-/* Magnifying glass display panel */
-.zoom-panel-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-repeat: no-repeat;
-  background-size: 200%; /* Double zoom */
-  z-index: 10;
-  pointer-events: none;
-}
-
-/* Thumbnails row */
+/* Simulating angles with zoom-crops of a single image */
 .gallery-thumbnails {
   display: flex;
   gap: 15px;

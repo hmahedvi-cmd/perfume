@@ -18,10 +18,6 @@ function ProductDetails() {
   const [activeTab, setActiveTab] = useState("profile");
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  // Zoom magnifier states
-  const [zoomStyle, setZoomStyle] = useState({ display: "none" });
-  const containerRef = useRef(null);
-
   const { addToCart } = useCart();
   const { wishlist, toggleWishlist } = useWishlist();
 
@@ -79,23 +75,6 @@ function ProductDetails() {
     product.image,
   ];
 
-  // Mouse move zoom magnifying logic
-  const handleMouseMove = (e) => {
-    if (!containerRef.current) return;
-    const { left, top, width, height } = containerRef.current.getBoundingClientRect();
-    const x = ((e.pageX - left - window.scrollX) / width) * 100;
-    const y = ((e.pageY - top - window.scrollY) / height) * 100;
-    setZoomStyle({
-      display: "block",
-      backgroundImage: `url(${product.image})`,
-      backgroundPosition: `${x}% ${y}%`,
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setZoomStyle({ display: "none" });
-  };
-
   const handleCartAdd = () => {
     for (let i = 0; i < qty; i++) {
       addToCart(product);
@@ -116,19 +95,12 @@ function ProductDetails() {
         {/* Left Column: Image Gallery */}
         <div className="details-left">
           <div className="gallery-main-viewport">
-            <div
-              className="gallery-main-image-wrapper"
-              ref={containerRef}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-            >
+            <div className="gallery-main-image-wrapper">
               <img
                 src={galleryImages[activeImageIndex]}
                 alt={product.name}
                 className={`main-display-img angle-${activeImageIndex}`}
               />
-              {/* Zoom Panel */}
-              <div className="zoom-panel-overlay" style={zoomStyle}></div>
             </div>
           </div>
           
