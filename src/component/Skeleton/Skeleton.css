@@ -1,39 +1,71 @@
-.skeleton-card {
-  background: white;
-  padding: 15px;
-  border-radius: 15px;
-  animation: pulse 1.5s infinite;
-}
-
-.image {
-  width: 100%;
-  height: 280px;
-  background: #ddd;
-  border-radius: 10px;
-}
-
-.line {
-  width: 100%;
-  height: 15px;
-  background: #ddd;
-  margin-top: 15px;
-  border-radius: 5px;
-}
-
-.short {
-  width: 60%;
-}
-
-@keyframes pulse {
+/* Base shimmer animation */
+@keyframes shimmer {
   0% {
-    opacity: 1;
+    background-position: -1000px 0;
   }
-
-  50% {
-    opacity: 0.5;
-  }
-
   100% {
-    opacity: 1;
+    background-position: 1000px 0;
   }
+}
+
+.skeleton {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(to right, var(--bg-secondary) 4%, var(--border) 25%, var(--bg-secondary) 36%);
+  background-size: 1000px 100%;
+}
+
+body.dark .skeleton {
+  background: linear-gradient(to right, var(--bg-secondary) 4%, #2c2d33 25%, var(--bg-secondary) 36%);
+  background-size: 1000px 100%;
+}
+
+.skeleton-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 0;
+}
+
+.skeleton-card .image {
+  width: 100%;
+  aspect-ratio: 1 / 1.15;
+  border-bottom: 1px solid var(--border);
+}
+
+.skeleton-card-info {
+  padding: 24px;
+}
+
+.skeleton-card .line {
+  height: 15px;
+  margin-bottom: 15px;
+  border-radius: 2px;
+}
+
+.skeleton-card .short {
+  width: 50%;
+  margin-bottom: 25px;
+}
+
+/* Product Details Skeleton */
+.skeleton-details {
+  padding-top: 50px;
+}
+
+.skeleton-img-large {
+  width: 100%;
+  aspect-ratio: 1.1 / 1;
+  border: 1px solid var(--border);
+}
+
+.skeleton-thumb {
+  width: 80px;
+  height: 80px;
+  border: 1px solid var(--border);
+}
+
+.skeleton-text {
+  border-radius: 2px;
 }

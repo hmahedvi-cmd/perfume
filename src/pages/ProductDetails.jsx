@@ -7,6 +7,7 @@ import { FaStar, FaHeart, FaChevronRight, FaShoppingCart, FaShieldAlt } from "re
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import ProductCard from "../component/ProductCard/ProductCard";
+import SkeletonProductDetails from "../component/Skeleton/SkeletonProductDetails";
 import "./ProductDetails.css";
 
 function ProductDetails() {
@@ -20,6 +21,8 @@ function ProductDetails() {
 
   const { addToCart } = useCart();
   const { wishlist, toggleWishlist } = useWishlist();
+
+  const [showStickyBuy, setShowStickyBuy] = useState(false);
 
   useEffect(() => {
     const loadProductData = async () => {
@@ -45,11 +48,23 @@ function ProductDetails() {
     loadProductData();
   }, [id]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show sticky bar only if scrolled past the main buy panel (roughly 600px down on mobile)
+      if (window.innerWidth <= 768 && window.scrollY > 600) {
+        setShowStickyBuy(true);
+      } else {
+        setShowStickyBuy(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   if (loading) {
     return (
-      <div className="product-details-loading-container">
-        <div className="luxury-spinner"></div>
-        <p>REVEALING OLFACTORY ACCORDS...</p>
+      <div className="details-page-wrapper">
+        <SkeletonProductDetails />
       </div>
     );
   }
@@ -250,6 +265,27 @@ function ProductDetails() {
           </div>
         )}
       </section>
+
+      {/* Mobile Sticky Add to Cart Bar */}
+      <AnimatePresence>
+        {showStickyBuy && (
+          <motion.div
+            className="mobile-sticky-buy-bar"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "tween", duration: 0.3 }}
+          >
+            <div className="sticky-buy-info">
+              <span className="sticky-title">{product.name}</span>
+              <span className="sticky-price">₹{product.price}</span>
+            </div>
+            <button className="btn btn-primary sticky-add-btn" onClick={handleCartAdd}>
+              Add to Cart
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

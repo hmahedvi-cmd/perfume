@@ -21,16 +21,32 @@ function Navbar() {
   const [allProducts, setAllProducts] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
-  // Handle scroll detection for sticky background transitions
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = React.useRef(0);
+
+  // Handle scroll detection for sticky background transitions and auto-hide
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
+      const currentScrollY = window.scrollY;
+      
+      // Background blur trigger
+      if (currentScrollY > 50) {
         setScrolled(true);
       } else {
         setScrolled(false);
       }
+
+      // Auto-hide trigger
+      if (currentScrollY > lastScrollY.current && currentScrollY > 150) {
+        setHidden(true); // scrolling down
+      } else {
+        setHidden(false); // scrolling up
+      }
+      
+      lastScrollY.current = currentScrollY;
     };
-    window.addEventListener("scroll", handleScroll);
+    
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -72,7 +88,7 @@ function Navbar() {
 
   return (
     <>
-      <header className={`site-header ${scrolled ? "header-scrolled" : "header-transparent"}`}>
+      <header className={`site-header ${scrolled ? "header-scrolled" : "header-transparent"} ${hidden ? "header-hidden" : ""}`}>
         <div className="header-container">
           <Link to="/" className="luxury-logo">
             AURA <span>PARFUMS</span>
