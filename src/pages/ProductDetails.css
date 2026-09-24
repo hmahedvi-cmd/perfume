@@ -55,6 +55,13 @@
   overflow: hidden;
   border: 1px solid var(--border);
   background: var(--bg-secondary);
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gallery-main-viewport:hover {
+  border-color: var(--accent-border);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  transform: translateY(-4px);
 }
 
 .gallery-main-image-wrapper {
@@ -67,7 +74,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gallery-main-viewport:hover .main-display-img:not(.angle-1):not(.angle-2) {
+  transform: scale(1.05);
 }
 
 /* Simulating angles with zoom-crops of a single image */
@@ -75,8 +86,16 @@
   transform: scale(1.6) translateY(4%);
 }
 
+.gallery-main-viewport:hover .main-display-img.angle-1 {
+  transform: scale(1.65) translateY(4%);
+}
+
 .main-display-img.angle-2 {
   transform: scale(1.3) rotate(-3deg);
+}
+
+.gallery-main-viewport:hover .main-display-img.angle-2 {
+  transform: scale(1.35) rotate(-3deg);
 }
 
 /* Simulating angles with zoom-crops of a single image */
